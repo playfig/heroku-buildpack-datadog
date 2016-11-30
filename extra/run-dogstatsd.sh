@@ -1,10 +1,5 @@
 #!/bin/bash
 
-if [[ $DISABLE_DATADOG_AGENT ]]; then
-  echo "DISABLE_DATADOG_AGENT environment variable is set, not starting the agent."
-  exit 0
-fi
-
 if [[ $DATADOG_API_KEY ]]; then
   sed -i -e "s/^.*api_key:.*$/api_key: ${DATADOG_API_KEY}/" /app/.apt/opt/datadog-agent/agent/datadog.conf
 else
@@ -19,11 +14,15 @@ else
   exit 1
 fi
 
-(
-  # Unset other PYTHONPATH/PYTHONHOME variables before we start
-  unset PYTHONHOME PYTHONPATH
-  # Load our library path first when starting up
-  export LD_LIBRARY_PATH=/app/.apt/opt/datadog-agent/embedded/lib:$LD_LIBRARY_PATH
-  mkdir -p /tmp/logs/datadog
-  exec /app/.apt/opt/datadog-agent/embedded/bin/python /app/.apt/opt/datadog-agent/agent/dogstatsd.py start
-)
+RUN_DYNO=$(echo $DYNO | grep '^run')
+
+if [[ -z $RUN_DYNO ]]; then
+  (
+    # Unset other PYTHONPATH/PYTHONHOME variables before we start
+    unset PYTHONHOME PYTHONPATH
+    # Load our library path first when starting up
+    export LD_LIBRARY_PATH=/app/.apt/opt/datadog-agent/embedded/lib:$LD_LIBRARY_PATH
+    mkdir -p /tmp/logs/datadog
+    exec /app/.apt/opt/datadog-agent/embedded/bin/python /app/.apt/opt/datadog-agent/agent/dogstatsd.py start
+  )
+fi
