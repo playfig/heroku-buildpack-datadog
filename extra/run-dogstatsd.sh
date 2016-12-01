@@ -14,7 +14,7 @@ else
   exit 1
 fi
 
-RUN_DYNO=$(echo $DYNO | grep '^run')
+RUN_DYNO=$(echo $DYNO | grep '^run\.[0-9]\+')
 
 if [[ -z $RUN_DYNO ]]; then
   (
