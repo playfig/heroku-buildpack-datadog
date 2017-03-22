@@ -28,7 +28,7 @@ GPG_KEY_FILE="$BUILDPACK_DIR/etc/datadog.gpg"
 APT_OPTIONS="-o debug::nolocking=true -o Dir::Etc::Trusted=$GPG_KEYRING_FILE -o Dir::Etc::SourceList=$APT_REPO_FILE -o dir::cache=$APT_CACHE_DIR -o dir::state=$APT_STATE_DIR"
 
 # Where the Agent is installed & configured
-DD_AGENT_ROOT="$APT_BUILD_DIR"
+DD_AGENT_ROOT=""
 DD_AGENT_CONF="$DD_AGENT_ROOT/opt/datadog-agent/agent/datadog.conf"
 DD_LOG_DIR="/tmp/logs/datadog"
 
