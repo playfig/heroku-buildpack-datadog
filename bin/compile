@@ -37,7 +37,7 @@ mkdir -p "$CACHE_DIR"
 mkdir -p "$APT_BUILD_DIR"
 mkdir -p "$APT_CACHE_DIR/archives/partial"
 mkdir -p "$APT_STATE_DIR/lists/partial"
-mkdir -p "$DD_AGENT_ROOT"
+test -n "$DD_AGENT_ROOT" && mkdir -p "$DD_AGENT_ROOT"
 mkdir -p "$GPG_HOME_DIR"
 
 topic "Adding GPG key"
